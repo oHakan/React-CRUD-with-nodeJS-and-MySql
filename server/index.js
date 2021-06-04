@@ -18,6 +18,35 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
+passport.serializeUser((user,done) => {
+    done(null, user);
+})
+
+passport.deserializeUser((obj, done) => {
+    done(null,obj);
+})
+
+let Discordtest = new Strategy({
+    clientID: "800082712458559528",
+    clientSecret: "oREDquza-OlbYGzIkPju9F7FyInX3zh3",
+    callbackURL: "http://localhost:3000/dashboard",
+    scope: [ "email", "identify"]
+}, (accessToken, refreshToken, profile, done) => {
+    process.nextTick(() => done(null, profile))
+});
+
+passport.use(Discordtest);
+
+app.use(session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.get("/api/get", (req, res) => {
 
     const sqlGetting = "SELECT * FROM nodejs";
