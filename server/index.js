@@ -2,7 +2,10 @@ const express = require('express')
 const app = express()
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const mysql = require('mysql')
+const mysql = require('mysql');
+const passport = require('passport');
+const { Strategy } = require('passport-discord');
+
 
 const db = mysql.createPool({
     host: 'localhost',
@@ -25,35 +28,59 @@ app.get("/api/get", (req, res) => {
 });
 
 
-app.post("/api/insert", (req, res) => {
+app.post("/api/insert", (req, res,) => {
 
     const name = req.body.name
     const degree = req.body.degree
+    
 
-    const sqlTest = "INSERT INTO nodejs (name, degree) VALUES (?,?);"
-
-    db.query(sqlTest, [name, degree], (err, result)=>{
+    db.query("SELECT COUNT(*) AS cnt FROM nodejs WHERE name = ? " , 
+    name , function(err , data){
+   if(err){
        console.log(err);
-    })
+       res.send('Hata')
+   }   
+   else{
+       if(data[0].cnt > 0){  
+           console.log('Already existing..') 
+       }else{
+           db.query("INSERT INTO nodejs (name, degree) VALUES (?,?);", [name, degree] , function(err , insert){
+               if(err){
+                console.log(err)
+               }else{
+                console.log('Succesfully..')
+               }
+           })                  
+       }
+   }
+})
+
 });
 
-app.delete("/api/delete/:name", (req, res) => {
-    const name = req.params.name
 
-    const sqltestdelete = "DELETE FROM nodejs WHERE name = ?"
+app.get('/test', function(req, res) {
+    res.redirect('test');
+  });
 
-    db.query(sqltestdelete, name, (err, result)=>{
+
+  
+app.delete("/api/delete/:id", (req, res) => {
+    const id = req.params.id
+
+    const sqltestdelete = "DELETE FROM nodejs WHERE id = ?"
+
+    db.query(sqltestdelete, id, (err, result)=>{
       if (err) console.log(err);
     })
 });
 
 app.put("/api/update/", (req, res) => {
-    const name = req.body.name;
+    const id = req.body.id;
     const degree = req.body.degree;
 
-    const sqltestupdate = "UPDATE nodejs SET degree = ? WHERE name = ?"
+    const sqltestupdate = "UPDATE nodejs SET degree = ? WHERE id = ?"
 
-    db.query(sqltestupdate, [degree, name], (err, result)=>{
+    db.query(sqltestupdate, [degree, id], (err, result)=>{
       if (err) console.log(err);
     });
 });

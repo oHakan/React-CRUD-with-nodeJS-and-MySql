@@ -17,8 +17,8 @@ function App() {
   })
 
   const submitTest = () => {
-    Axios.post("http://localhost:3001/api/insert", {name: name, degree: degree}).then(() => {
-      alert("Succesfully!");
+    Axios.post("http://localhost:3001/api/insert", {name: name, degree: degree}).then(function(response) {
+     
     });
 
     setTotalreview([
@@ -27,13 +27,13 @@ function App() {
     ]);
   };
 
-  const deleteTest = (name) => {
-    Axios.delete(`http://localhost:3001/api/delete/${name}`)
+  const deleteTest = (id) => {
+    Axios.delete(`http://localhost:3001/api/delete/${id}`)
   };
 
-  const updateTest = (name) => {
+  const updateTest = (id) => {
     Axios.put("http://localhost:3001/api/update", {
-      name: name,
+      id: id,
       degree: update,
     });
     setUpdate("")
@@ -52,12 +52,14 @@ function App() {
     {totalreview.map((val)=>{
       return (
         <div class="list">
-         <h1> Name: {val.name} | Degree: {val.degree} </h1> <button onClick={() => {deleteTest(val.name);}}>Delete</button>
+         <h1> ID: {val.id} | Name: {val.name} | Degree: {val.degree} </h1> <button onClick={() => {deleteTest(val.id);}}>Delete</button>
          <input type="text" name="update" onChange={(e) => {
               setUpdate(e.target.value)
          }}/>
-         <button onClick={() => {updateTest(val.name)}}>Update Test</button>
+         <button onClick={() => {updateTest(val.id)}}>Update Test</button>
+         <h1></h1>
          </div>
+        
       );
     })}
 
