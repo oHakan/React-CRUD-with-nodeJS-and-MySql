@@ -46,6 +46,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.get("/giris", passport.authenticate("discord", {
+    scope: [ "guilds", "identify"]
+}));
 
 app.get("/api/get", (req, res) => {
 
