@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const mysql = require('mysql');
 const passport = require('passport');
 const { Strategy } = require('passport-discord');
-
+const session = require("express-session");
 
 const db = mysql.createPool({
     host: 'localhost',
