@@ -50,6 +50,13 @@ app.get("/giris", passport.authenticate("discord", {
     scope: [ "guilds", "identify"]
 }));
 
+app.get("/dashboard", passport.authenticate("discord", {
+    failureRedirect: "/hata"
+}), (req, res) => {
+    res.redirect("/")
+});
+
+
 app.get("/api/get", (req, res) => {
 
     const sqlGetting = "SELECT * FROM nodejs";

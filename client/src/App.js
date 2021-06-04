@@ -16,6 +16,12 @@ function App() {
     })
   })
 
+  useEffect(() => {
+    Axios.get('http://localhost:3001/giris').then((response) => {
+      setTotalreview(response.data);
+    })
+  })
+
   const submitTest = () => {
     Axios.post("http://localhost:3001/api/insert", {name: name, degree: degree}).then(function(response) {
      
