@@ -29,7 +29,7 @@ passport.deserializeUser((obj, done) => {
 let Discordtest = new Strategy({
     clientID: "800082712458559528",
     clientSecret: "oREDquza-OlbYGzIkPju9F7FyInX3zh3",
-    callbackURL: "http://localhost:3000/dashboard",
+    callbackURL: "http://localhost:3001/dashboard",
     scope: [ "email", "identify"]
 }, (accessToken, refreshToken, profile, done) => {
     process.nextTick(() => done(null, profile))
@@ -46,8 +46,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/giris", passport.authenticate("discord", {
-    scope: [ "guilds", "identify"]
+app.get("/api/giris", passport.authenticate("discord", {
+    scope: [ "email", "identify"]
 }));
 
 app.get("/dashboard", passport.authenticate("discord", {

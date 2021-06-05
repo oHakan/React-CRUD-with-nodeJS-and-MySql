@@ -7,6 +7,7 @@ function App() {
   const [name, setName] = useState('');
   const [degree, setDegree] = useState('');
   const [totalreview, setTotalreview] = useState([])
+  const [Discord, setDiscord] = useState([])
 
   const [update, setUpdate] = useState("");
 
@@ -17,8 +18,8 @@ function App() {
   })
 
   useEffect(() => {
-    Axios.get('http://localhost:3001/giris').then((response) => {
-      setTotalreview(response.data);
+    Axios.get('http://localhost:3000/').then((response)=> {
+      setDiscord(response.data);
     })
   })
 
@@ -31,6 +32,12 @@ function App() {
       ...totalreview,
       {name: name, degree:degree},
     ]);
+
+    setDiscord([
+      ...Discord,
+      {isim: name}
+    ])
+
   };
 
   const deleteTest = (id) => {
@@ -55,6 +62,14 @@ function App() {
     <input type="text" name="degree"  onChange={(e) => {setDegree(e.target.value)}}/>
     <button onClick={submitTest}>Test it</button>
 
+    {Discord.map((val) =>{
+      return (
+        <div class="test">
+          <h1>{val.isim}</h1>
+          </div>
+      )
+    })}
+
     {totalreview.map((val)=>{
       return (
         <div class="list">
@@ -63,6 +78,15 @@ function App() {
               setUpdate(e.target.value)
          }}/>
          <button onClick={() => {updateTest(val.id)}}>Update Test</button>
+         <h1></h1>
+         </div>
+        
+      );
+    })}
+    {Discord.map((val)=>{
+      return (
+        <div class="list">
+         <h1> ID: {val.name} | Name: {val.name} | Degree: {val.degree} </h1> <button onClick={() => {deleteTest(val.id);}}>Delete</button>
          <h1></h1>
          </div>
         
